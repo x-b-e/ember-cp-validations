@@ -500,7 +500,7 @@ function generateValidationResultsFor(
     let options = get(validator, 'options').toObject();
     let isWarning = getWithDefault(options, 'isWarning', false);
     let disabled = getWithDefault(options, 'disabled', false);
-    let debounce = getWithDefault(options, 'debounce', 0);
+    let optDebounce = getWithDefault(options, 'debounce', 0);
     let lazy = getWithDefault(options, 'lazy', true);
 
     if (disabled || (lazy && isInvalid) || !isModelValidatable) {
@@ -510,7 +510,7 @@ function generateValidationResultsFor(
 
       // Return a promise and pass the resolve method to the debounce handler
       value = new Promise(resolve => {
-        let t = debounce(validator, resolveDebounce, resolve, debounce);
+        let t = debounce(validator, resolveDebounce, resolve, optDebounce);
 
         if (!opts.disableDebounceCache) {
           cache[guidFor(validator)] = t;
