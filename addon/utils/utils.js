@@ -2,7 +2,7 @@ import ArrayProxy from '@ember/array/proxy';
 import ObjectProxy from '@ember/object/proxy';
 import { isHTMLSafe } from '@ember/template';
 import EmberObject from '@ember/object';
-import { typeOf } from '@ember/utils';
+import { typeOf, isBlank } from '@ember/utils';
 import { A as emberArray } from '@ember/array';
 import {
   macroCondition,
@@ -74,7 +74,14 @@ export function getValidatableValue(value) {
   }
 
   if (isDSManyArray(value)) {
-    return emberArray(value.filter((v) => isValidatable(v)));
+    let arrayLike = []
+    if (value.content) {
+      arrayLike = isBlank(value.content) ? [] : Array.from(value.content);
+    } else {
+      arrayLike = Array.from(value);
+    }
+    return emberArray(arrayLike.filter((v) => isValidatable(v)));
+
   }
 
   return isValidatable(value) ? value : undefined;
