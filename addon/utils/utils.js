@@ -9,6 +9,7 @@ import {
   dependencySatisfies,
   importSync,
 } from '@embroider/macros';
+import getArray from './get-array';
 
 let DS;
 if (macroCondition(dependencySatisfies('ember-data', '*'))) {
@@ -74,7 +75,7 @@ export function getValidatableValue(value) {
   }
 
   if (isDSManyArray(value)) {
-    return emberArray(value.filter((v) => isValidatable(v)));
+    return emberArray(getArray(value).filter((v) => isValidatable(v)));
   }
 
   return isValidatable(value) ? value : undefined;
